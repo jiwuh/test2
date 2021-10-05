@@ -1,0 +1,15 @@
+---
+# tasks file for webserver
+- name: Update apt cache
+  apt: update_cache=yes cache_valid_time=3600
+  become: yes
+
+- name: Install required software
+  apt:
+    name:
+      - apache2
+      - php-mysql
+      - php
+      - libapache2-mod-php
+    state: present
+  become: yes

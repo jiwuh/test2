@@ -1,0 +1,17 @@
+---
+# tasks file for ssl
+- name: Create ssl directory
+  file: path=/etc/apache2/ssl state=directory
+  become: yes
+
+- name: Create self signed Cert
+  command: openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=IE/ST=Dublin/L=Dublin/O=Dude/CN=Unknown" -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt
+  become: yes
+
+- name: Enable SSL module for Apache
+  command: a2enmod ssl
+  become: yes
+
+- name: Restart apache
+  service: name=apache2 state=restarted
+  become: yes

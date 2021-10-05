@@ -1,0 +1,25 @@
+- hosts: all
+  gather_facts: False
+
+  pre_tasks:
+    - include_vars: "{{ item }}"
+      with_items:
+        - group_vars/credentials
+
+  tasks:
+  - name: Install python 2 required by ansible
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+    become: yes
+
+- hosts: db
+
+  roles:
+    - database
+
+- hosts: cms
+
+  roles:
+    - webserver
+    - ssl
+    - php
+    - cms
